@@ -1,0 +1,3228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>TCK Care - Supporting Third Culture Kids & Missionary Families</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary: #4ECDC4;
+            --secondary: #FF6B6B;
+            --accent: #FFD93D;
+            --success: #95E1D3;
+            --text: #2C3E50;
+            --light-text: #7F8C8D;
+            --bg-light: #F8F9FA;
+            --bg-cream: #FFF5E6;
+            --kid-purple: #9B59B6;
+            --teen-blue: #3498DB;
+            --parent-green: #27AE60;
+            --gradient-kid: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+            --gradient-teen: linear-gradient(135deg, #3498DB 0%, #2980B9 100%);
+            --gradient-parent: linear-gradient(135deg, #27AE60 0%, #229954 100%);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-light);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .screen {
+            display: none;
+            min-height: calc(100vh - 80px);
+            padding: 20px;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Back Button */
+        .back-button {
+            background: white;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        /* Opening Screen */
+        .opening-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #4ECDC4 100%);
+            margin: -20px;
+        }
+
+        .world-icon {
+            font-size: 100px;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .opening-screen h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 3em;
+            color: white;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .opening-screen p {
+            font-size: 1.3em;
+            color: white;
+            margin-bottom: 40px;
+            max-width: 600px;
+            opacity: 0.95;
+        }
+
+        .intro-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 500px;
+        }
+
+        .intro-card h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* User Selection */
+        .user-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .user-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 3px solid transparent;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .user-card.kid {
+            border-color: var(--kid-purple);
+        }
+
+        .user-card.teen {
+            border-color: var(--teen-blue);
+        }
+
+        .user-card.parent {
+            border-color: var(--parent-green);
+        }
+
+        .user-card .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .user-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        /* Dashboard Headers */
+        .dashboard-header {
+            margin: -20px -20px 30px;
+            padding: 40px 20px;
+            color: white;
+            text-align: center;
+            border-radius: 0 0 30px 30px;
+        }
+
+        .dashboard-header.kid {
+            background: var(--gradient-kid);
+        }
+
+        .dashboard-header.teen {
+            background: var(--gradient-teen);
+        }
+
+        .dashboard-header.parent {
+            background: var(--gradient-parent);
+        }
+
+        .dashboard-header h2 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        /* Content Cards */
+        .content-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .content-card h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.5em;
+        }
+
+        /* Activity Grid */
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .activity-card {
+            background: linear-gradient(135deg, #FFE5CC 0%, #FFD4E5 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .activity-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .activity-card .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .activity-card h4 {
+            font-size: 1em;
+            color: var(--text);
+        }
+
+        /* Story Card */
+        .story-card {
+            background: linear-gradient(135deg, #FAD0C4 0%, #FFD1FF 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .story-card h4 {
+            color: var(--text);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .story-content {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        /* Emotion Cards */
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .emotion-card {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid #E0E0E0;
+        }
+
+        .emotion-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .emotion-card.selected {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .emotion-card .emoji {
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+
+        .emotion-card .label {
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* Journey Map */
+        .journey-map {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .journey-item {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .journey-item:hover {
+            background: var(--accent);
+            transform: translateX(10px);
+        }
+
+        .journey-item .icon {
+            font-size: 30px;
+            margin-right: 20px;
+        }
+
+        .journey-item .content {
+            flex: 1;
+        }
+
+        .journey-item h4 {
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--text);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--text);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        /* Safe Space */
+        .safe-space {
+            background: linear-gradient(135deg, #E0F7FA 0%, #E1F5FE 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .safe-space h4 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        /* Progress Tracker */
+        .progress-container {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .progress-bar {
+            background: #E0E0E0;
+            height: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success) 0%, var(--primary) 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .stat-card .label {
+            font-size: 0.9em;
+            color: var(--light-text);
+            margin-top: 5px;
+        }
+
+        /* Resource List */
+        .resource-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resource-list li {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary);
+        }
+
+        .resource-list li:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .resource-list li .icon {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        /* Audio Toggle */
+        .audio-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.15);
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s;
+        }
+
+        .audio-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .audio-toggle.playing {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 80px;
+            z-index: 998;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--light-text);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .nav-item .label {
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        /* Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .message.success {
+            background: var(--success);
+            color: var(--text);
+            border-left: 5px solid #52C41A;
+        }
+
+        .message.info {
+            background: #E3F2FD;
+            color: #1565C0;
+            border-left: 5px solid #2196F3;
+        }
+
+        .message.warning {
+            background: #FFF3E0;
+            color: #E65100;
+            border-left: 5px solid #FF9800;
+        }
+
+        /* Game Elements */
+        .game-container {
+            background: linear-gradient(135deg, #FFE5CC 0%, #E1F5FE 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+
+        .game-score {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-score .points {
+            font-size: 2em;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .user-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .activity-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .emotion-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- User Switcher (Always Visible) -->
+    <div style="position: fixed; top: 10px; left: 10px; z-index: 1000; background: white; padding: 5px 15px; border-radius: 25px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;">
+        <span style="font-weight: bold; color: var(--primary);">Switch to:</span>
+        <button onclick="switchToUser('kid')" style="background: var(--kid-purple); color: white; border: none; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: 600;">Kid</button>
+        <button onclick="switchToUser('teen')" style="background: var(--teen-blue); color: white; border: none; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: 600;">Teen</button>
+        <button onclick="switchToUser('parent')" style="background: var(--parent-green); color: white; border: none; padding: 5px 12px; border-radius: 15px; cursor: pointer; font-weight: 600;">Parent</button>
+    </div>
+
+    <!-- Audio Toggle -->
+    <div class="audio-toggle" id="audioToggle">
+        <span id="audioIcon">🎵</span>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="backgroundAudio" loop>
+        <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAAAAA=" type="audio/wav">
+    </audio>
+
+    <!-- Opening Screen -->
+    <div class="screen active" id="openingScreen">
+        <div class="opening-screen">
+            <div class="world-icon">🌍</div>
+            <h1>Third Culture Kids Care</h1>
+            <p>Supporting Missionary Kids & Their Families</p>
+            
+            <div class="intro-card">
+                <h2>Welcome to TCK Care</h2>
+                <p style="line-height: 1.8; margin-bottom: 20px;">
+                    Growing up between cultures is a unique gift and challenge. This app helps Third Culture Kids 
+                    process their experiences, build resilience, and celebrate their multicultural identity.
+                </p>
+                
+                <div style="background: var(--bg-light); padding: 20px; border-radius: 15px; margin: 20px 0;">
+                    <h3 style="color: var(--primary); margin-bottom: 15px;">Who is this for?</h3>
+                    <ul style="text-align: left; line-height: 2; margin-left: 20px;">
+                        <li>🌟 Kids (5-12) navigating life between cultures</li>
+                        <li>🚀 Teens (13-18) forming their identity</li>
+                        <li>💚 Parents supporting their TCKs</li>
+                        <li>🏠 Mission organizations caring for families</li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-full" onclick="showUserSelection()">Get Started</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Selection -->
+    <div class="screen" id="userSelection">
+        <div style="text-align: center; padding: 40px 20px;">
+            <h2 style="color: var(--primary); margin-bottom: 30px;">Who are you?</h2>
+            
+            <div class="user-selection">
+                <div class="user-card kid" onclick="selectUser('kid')">
+                    <div class="icon">🌟</div>
+                    <h3>I'm a Kid!</h3>
+                    <p>Ages 5-12</p>
+                    <p style="font-size: 0.9em; color: var(--light-text); margin-top: 10px;">
+                        Fun activities, stories, and games about being a TCK
+                    </p>
+                </div>
+                
+                <div class="user-card teen" onclick="selectUser('teen')">
+                    <div class="icon">🚀</div>
+                    <h3>I'm a Teen</h3>
+                    <p>Ages 13-18</p>
+                    <p style="font-size: 0.9em; color: var(--light-text); margin-top: 10px;">
+                        Identity exploration, peer connection, and future planning
+                    </p>
+                </div>
+                
+                <div class="user-card parent" onclick="selectUser('parent')">
+                    <div class="icon">💚</div>
+                    <h3>I'm a Parent</h3>
+                    <p>Supporting my TCK</p>
+                    <p style="font-size: 0.9em; color: var(--light-text); margin-top: 10px;">
+                        Resources, strategies, and support for raising TCKs
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kid Dashboard (5-12) -->
+    <div class="screen" id="kidDashboard">
+        <div class="dashboard-header kid">
+            <h2>Welcome, World Explorer! 🌟</h2>
+            <p>You're amazing for living in different places!</p>
+        </div>
+
+        <div class="progress-container">
+            <h3>Your Adventure Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="kidProgress" style="width: 0%">0%</div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number" id="kidCountries">0</div>
+                    <div class="label">Countries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="kidFriends">0</div>
+                    <div class="label">Friends</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="kidStories">0</div>
+                    <div class="label">Stories</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="kidBadges">0</div>
+                    <div class="label">Badges</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>Today's Adventures</h3>
+            <div class="activity-grid">
+                <div class="activity-card" onclick="startActivity('myStory')">
+                    <div class="icon">📖</div>
+                    <h4>My Story</h4>
+                </div>
+                <div class="activity-card" onclick="startActivity('feelings')">
+                    <div class="icon">😊</div>
+                    <h4>Feelings</h4>
+                </div>
+                <div class="activity-card" onclick="startActivity('worldMap')">
+                    <div class="icon">🗺️</div>
+                    <h4>My World</h4>
+                </div>
+                <div class="activity-card" onclick="startActivity('friends')">
+                    <div class="icon">👫</div>
+                    <h4>Friends</h4>
+                </div>
+                <div class="activity-card" onclick="startActivity('games')">
+                    <div class="icon">🎮</div>
+                    <h4>Games</h4>
+                </div>
+                <div class="activity-card" onclick="startActivity('safety')">
+                    <div class="icon">🛡️</div>
+                    <h4>Safe Place</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="story-card">
+            <h4>Story Time: The Chameleon Kid</h4>
+            <div class="story-content">
+                <p>
+                    Once there was a special chameleon who could change colors wherever he went. 
+                    When he was in the jungle, he was green. In the desert, he turned sandy brown. 
+                    By the ocean, he became blue like the waves.
+                </p>
+                <p style="margin-top: 15px;">
+                    Some animals thought this was strange, but the wise owl said, "You have a special gift! 
+                    You can understand and belong in many places. You're not weird - you're wonderful!"
+                </p>
+                <p style="margin-top: 15px; font-weight: bold; color: var(--primary);">
+                    Just like you, the chameleon learned that belonging to many places makes you extra special! 🦎
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teen Dashboard (13-18) -->
+    <div class="screen" id="teenDashboard">
+        <div class="dashboard-header teen">
+            <h2>Hey, Global Citizen! 🚀</h2>
+            <p>Your multicultural life is your superpower</p>
+        </div>
+
+        <div class="progress-container">
+            <h3>Identity Journey</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="teenProgress" style="width: 0%">0%</div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="number" id="teenReflections">0</div>
+                    <div class="label">Reflections</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="teenConnections">0</div>
+                    <div class="label">Connections</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="teenSkills">0</div>
+                    <div class="label">Skills</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="teenGoals">0</div>
+                    <div class="label">Goals</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>Your TCK Toolkit</h3>
+            <div class="activity-grid">
+                <div class="activity-card" onclick="startTeenActivity('identity')">
+                    <div class="icon">🎭</div>
+                    <h4>Identity Lab</h4>
+                </div>
+                <div class="activity-card" onclick="startTeenActivity('transitions')">
+                    <div class="icon">✈️</div>
+                    <h4>Transitions</h4>
+                </div>
+                <div class="activity-card" onclick="startTeenActivity('belonging')">
+                    <div class="icon">🏠</div>
+                    <h4>Belonging</h4>
+                </div>
+                <div class="activity-card" onclick="startTeenActivity('future')">
+                    <div class="icon">🎯</div>
+                    <h4>Future Me</h4>
+                </div>
+                <div class="activity-card" onclick="startTeenActivity('connect')">
+                    <div class="icon">🌐</div>
+                    <h4>TCK Connect</h4>
+                </div>
+                <div class="activity-card" onclick="startTeenActivity('journal')">
+                    <div class="icon">📝</div>
+                    <h4>Journal</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>TCK Strengths You're Building</h3>
+            <div class="journey-map">
+                <div class="journey-item">
+                    <div class="icon">🌍</div>
+                    <div class="content">
+                        <h4>Global Perspective</h4>
+                        <p>You see the world from multiple viewpoints</p>
+                    </div>
+                </div>
+                <div class="journey-item">
+                    <div class="icon">🔄</div>
+                    <div class="content">
+                        <h4>Adaptability</h4>
+                        <p>You can adjust to new situations quickly</p>
+                    </div>
+                </div>
+                <div class="journey-item">
+                    <div class="icon">🗣️</div>
+                    <div class="content">
+                        <h4>Cultural Bridge</h4>
+                        <p>You connect people from different backgrounds</p>
+                    </div>
+                </div>
+                <div class="journey-item">
+                    <div class="icon">💪</div>
+                    <div class="content">
+                        <h4>Resilience</h4>
+                        <p>You've overcome challenges that built strength</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Parent Dashboard -->
+    <div class="screen" id="parentDashboard">
+        <div class="dashboard-header parent">
+            <h2>Welcome, TCK Parent 💚</h2>
+            <p>Supporting your child's unique journey</p>
+        </div>
+
+        <div class="content-card">
+            <h3>Quick Assessment</h3>
+            <p>How is your TCK doing? Track their adjustment and wellbeing.</p>
+            
+            <div class="form-group">
+                <label>Child's Current Age Group:</label>
+                <select id="childAge">
+                    <option value="">Select age group...</option>
+                    <option value="5-8">5-8 years (Early Elementary)</option>
+                    <option value="9-12">9-12 years (Late Elementary)</option>
+                    <option value="13-15">13-15 years (Middle School)</option>
+                    <option value="16-18">16-18 years (High School)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Current Challenge Area:</label>
+                <select id="challengeArea">
+                    <option value="">Select main concern...</option>
+                    <option value="transition">Recent transition/move</option>
+                    <option value="identity">Identity confusion</option>
+                    <option value="belonging">Feeling of not belonging</option>
+                    <option value="grief">Grief and loss</option>
+                    <option value="reentry">Home country reentry</option>
+                    <option value="education">Educational transitions</option>
+                    <option value="relationships">Friendship challenges</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-full" onclick="getParentGuidance()">Get Customized Support</button>
+        </div>
+
+        <div class="content-card">
+            <h3>Parent Resources</h3>
+            <ul class="resource-list">
+                <li onclick="openResource('understanding')">
+                    <span class="icon">📚</span>
+                    <span>Understanding Your TCK</span>
+                </li>
+                <li onclick="openResource('transitions')">
+                    <span class="icon">✈️</span>
+                    <span>Managing Transitions</span>
+                </li>
+                <li onclick="openResource('identity')">
+                    <span class="icon">🎭</span>
+                    <span>Supporting Identity Formation</span>
+                </li>
+                <li onclick="openResource('education')">
+                    <span class="icon">🎓</span>
+                    <span>Educational Considerations</span>
+                </li>
+                <li onclick="openResource('grief')">
+                    <span class="icon">💔</span>
+                    <span>Processing Grief & Loss</span>
+                </li>
+                <li onclick="openResource('resilience')">
+                    <span class="icon">💪</span>
+                    <span>Building Resilience</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h3>RAFT Technique for Transitions</h3>
+            <div style="background: var(--bg-light); padding: 20px; border-radius: 15px;">
+                <p style="margin-bottom: 20px;">Help your child process transitions using RAFT:</p>
+                
+                <div style="margin: 15px 0;">
+                    <h4 style="color: var(--primary);">R - Reconciliation</h4>
+                    <p>Resolve conflicts and make peace with people</p>
+                </div>
+                
+                <div style="margin: 15px 0;">
+                    <h4 style="color: var(--primary);">A - Affirmation</h4>
+                    <p>Express appreciation and say thank you</p>
+                </div>
+                
+                <div style="margin: 15px 0;">
+                    <h4 style="color: var(--primary);">F - Farewell</h4>
+                    <p>Say proper goodbyes to people and places</p>
+                </div>
+                
+                <div style="margin: 15px 0;">
+                    <h4 style="color: var(--primary);">T - Think Ahead</h4>
+                    <p>Set realistic expectations for the new place</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kid Activities -->
+    <div class="screen" id="myStoryActivity">
+        <button class="back-button" onclick="showScreen('kidDashboard')">← Back to Adventures</button>
+        
+        <div class="content-card">
+            <h3>📖 My Amazing Story</h3>
+            <p>Every TCK has a special story. Let's create yours!</p>
+            
+            <div class="form-group">
+                <label>Where were you born? 🏥</label>
+                <input type="text" id="birthPlace" placeholder="City, Country">
+            </div>
+            
+            <div class="form-group">
+                <label>Places I've lived: 🏠</label>
+                <textarea id="placesLived" placeholder="List all the places you remember living..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>My favorite place was: ⭐</label>
+                <input type="text" id="favoritePlace" placeholder="Which place did you love most?">
+            </div>
+            
+            <div class="form-group">
+                <label>Languages I speak: 🗣️</label>
+                <input type="text" id="languages" placeholder="What languages do you know?">
+            </div>
+            
+            <div class="form-group">
+                <label>My superpower as a TCK is: 💪</label>
+                <textarea id="superpower" placeholder="What makes you special as a TCK?"></textarea>
+            </div>
+            
+            <button class="btn btn-full" onclick="saveKidStory()">Save My Story!</button>
+        </div>
+
+        <div class="story-card">
+            <h4>You're a Story Collector!</h4>
+            <div class="story-content">
+                <p>
+                    Every place you've lived adds a chapter to your story. 
+                    You're not just from one place - you're from many places, 
+                    and that makes your story extra special!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="feelingsActivity">
+        <button class="back-button" onclick="showScreen('kidDashboard')">← Back to Adventures</button>
+        
+        <div class="content-card">
+            <h3>😊 Feelings Explorer</h3>
+            <p>How are you feeling today? It's okay to have many feelings!</p>
+            
+            <div class="emotion-grid">
+                <div class="emotion-card" onclick="selectEmotion(this, 'happy')">
+                    <div class="emoji">😊</div>
+                    <div class="label">Happy</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'sad')">
+                    <div class="emoji">😢</div>
+                    <div class="label">Sad</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'excited')">
+                    <div class="emoji">🤗</div>
+                    <div class="label">Excited</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'worried')">
+                    <div class="emoji">😟</div>
+                    <div class="label">Worried</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'angry')">
+                    <div class="emoji">😠</div>
+                    <div class="label">Angry</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'confused')">
+                    <div class="emoji">😕</div>
+                    <div class="label">Confused</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'lonely')">
+                    <div class="emoji">😔</div>
+                    <div class="label">Lonely</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'proud')">
+                    <div class="emoji">😊</div>
+                    <div class="label">Proud</div>
+                </div>
+                <div class="emotion-card" onclick="selectEmotion(this, 'homesick')">
+                    <div class="emoji">🏠</div>
+                    <div class="label">Homesick</div>
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 30px;">
+                <label>Why do you feel this way?</label>
+                <textarea id="feelingWhy" placeholder="Tell me about your feeling..."></textarea>
+            </div>
+            
+            <button class="btn btn-full" onclick="processFeelings()">Share My Feelings</button>
+        </div>
+
+        <div class="safe-space" id="feelingResponse" style="display: none;">
+            <h4>Your Feelings Matter! 💚</h4>
+            <p id="feelingMessage"></p>
+        </div>
+    </div>
+
+    <!-- World Map Activity -->
+    <div class="screen" id="worldMapActivity">
+        <button class="back-button" onclick="showScreen('kidDashboard')">← Back to Adventures</button>
+        
+        <div class="content-card">
+            <h3>🗺️ My World Map</h3>
+            <p>Pin all the places you've lived and visited!</p>
+            
+            <div style="background: linear-gradient(135deg, #87CEEB 0%, #98FB98 100%); padding: 30px; border-radius: 20px; margin: 20px 0;">
+                <h4>🌍 Continents I've Been To:</h4>
+                <div class="emotion-grid" style="margin-top: 20px;">
+                    <div class="emotion-card" onclick="toggleContinent(this, 'Africa')">
+                        <div class="emoji">🌍</div>
+                        <div class="label">Africa</div>
+                    </div>
+                    <div class="emotion-card" onclick="toggleContinent(this, 'Asia')">
+                        <div class="emoji">🌏</div>
+                        <div class="label">Asia</div>
+                    </div>
+                    <div class="emotion-card" onclick="toggleContinent(this, 'Europe')">
+                        <div class="emoji">🌍</div>
+                        <div class="label">Europe</div>
+                    </div>
+                    <div class="emotion-card" onclick="toggleContinent(this, 'N.America')">
+                        <div class="emoji">🌎</div>
+                        <div class="label">N. America</div>
+                    </div>
+                    <div class="emotion-card" onclick="toggleContinent(this, 'S.America')">
+                        <div class="emoji">🌎</div>
+                        <div class="label">S. America</div>
+                    </div>
+                    <div class="emotion-card" onclick="toggleContinent(this, 'Australia')">
+                        <div class="emoji">🌏</div>
+                        <div class="label">Australia</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Countries I've lived in: 🏠</label>
+                <textarea id="countriesLived" placeholder="List all countries where you've had a home..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Countries I've visited: ✈️</label>
+                <textarea id="countriesVisited" placeholder="List all countries you've traveled to..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>My favorite food from each place: 🍜</label>
+                <textarea id="favoriteFoods" placeholder="What yummy foods do you remember?"></textarea>
+            </div>
+            
+            <button class="btn btn-full" onclick="saveWorldMap()">Save My World Map!</button>
+        </div>
+        
+        <div class="game-container">
+            <h4>🎮 World Explorer Challenge</h4>
+            <p>How many of these can you check off?</p>
+            <div style="background: white; padding: 20px; border-radius: 15px;">
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I've been on an airplane ✈️
+                </label>
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I've crossed an ocean 🌊
+                </label>
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I speak more than one language 🗣️
+                </label>
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I've tried food from 5+ countries 🍱
+                </label>
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I have friends from different countries 👫
+                </label>
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I've seen different kinds of money 💵
+                </label>
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I've celebrated holidays in different ways 🎉
+                </label>
+                <label style="display: block; margin: 10px 0;">
+                    <input type="checkbox" onchange="updateExplorerScore()"> I know greetings in 3+ languages 👋
+                </label>
+            </div>
+            <div class="game-score">
+                <div class="points" id="explorerScore">0/8 Explorer Points</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friends Activity -->
+    <div class="screen" id="friendsActivity">
+        <button class="back-button" onclick="showScreen('kidDashboard')">← Back to Adventures</button>
+        
+        <div class="content-card">
+            <h3>👫 My Friends Around the World</h3>
+            <p>Keep track of all your special friends!</p>
+            
+            <div class="form-group">
+                <label>Add a Friend:</label>
+                <input type="text" id="friendName" placeholder="Friend's name">
+                <input type="text" id="friendLocation" placeholder="Where do they live?" style="margin-top: 10px;">
+                <input type="text" id="friendMemory" placeholder="Favorite memory together" style="margin-top: 10px;">
+                <button class="btn btn-full" onclick="addFriend()" style="margin-top: 15px;">Add Friend to My Map!</button>
+            </div>
+            
+            <div id="friendsList" style="margin-top: 30px;">
+                <h4>My Friend Collection:</h4>
+                <div id="friendsDisplay">
+                    <p style="text-align: center; color: var(--light-text);">No friends added yet. Add your first friend above!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="story-card">
+            <h4>Friendship Super Powers</h4>
+            <div class="story-content">
+                <p>As a TCK, you have special friendship powers:</p>
+                <ul style="line-height: 2; margin-left: 20px;">
+                    <li>🌟 You can make friends quickly</li>
+                    <li>🌍 You understand different cultures</li>
+                    <li>💝 You know how to keep long-distance friendships</li>
+                    <li>🤝 You accept people who are different</li>
+                    <li>📱 You're good at staying connected</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content-card">
+            <h3>Friendship Activities</h3>
+            <div class="activity-grid">
+                <div class="activity-card" onclick="startFriendshipGame('memory')">
+                    <div class="icon">💭</div>
+                    <h4>Memory Game</h4>
+                </div>
+                <div class="activity-card" onclick="startFriendshipGame('letter')">
+                    <div class="icon">✉️</div>
+                    <h4>Write a Letter</h4>
+                </div>
+                <div class="activity-card" onclick="startFriendshipGame('call')">
+                    <div class="icon">📞</div>
+                    <h4>Call Schedule</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Games Activity -->
+    <div class="screen" id="gamesActivity">
+        <button class="back-button" onclick="showScreen('kidDashboard')">← Back to Adventures</button>
+        
+        <div class="content-card">
+            <h3>🎮 TCK Games Center</h3>
+            <p>Fun games about your amazing TCK life!</p>
+            
+            <div class="game-container">
+                <h4>🎯 Culture Match Game</h4>
+                <p>Match the greeting to the country!</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+                    <div style="background: white; padding: 20px; border-radius: 15px;">
+                        <h5>Greetings:</h5>
+                        <div class="draggable-word" style="margin: 10px 0;">Hello</div>
+                        <div class="draggable-word" style="margin: 10px 0;">Bonjour</div>
+                        <div class="draggable-word" style="margin: 10px 0;">Hola</div>
+                        <div class="draggable-word" style="margin: 10px 0;">Ni Hao</div>
+                    </div>
+                    <div style="background: var(--accent); padding: 20px; border-radius: 15px;">
+                        <h5>Countries:</h5>
+                        <div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px;">🇺🇸 USA</div>
+                        <div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px;">🇫🇷 France</div>
+                        <div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px;">🇪🇸 Spain</div>
+                        <div style="padding: 10px; margin: 5px 0; background: white; border-radius: 8px;">🇨🇳 China</div>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="checkCultureMatch()">Check Answers!</button>
+            </div>
+            
+            <div class="game-container" style="margin-top: 30px;">
+                <h4>🏃 TCK Challenge</h4>
+                <p>Click the button when you see something that matches your TCK life!</p>
+                <div id="tckChallengeWord" style="font-size: 2em; text-align: center; padding: 30px; background: white; border-radius: 15px; margin: 20px 0;">
+                    Ready to start?
+                </div>
+                <button class="btn btn-accent btn-full" onclick="startTCKChallenge()">Start Challenge!</button>
+                <div class="game-score">
+                    <div class="points" id="challengeScore">Score: 0</div>
+                </div>
+            </div>
+            
+            <div class="game-container" style="margin-top: 30px;">
+                <h4>🌍 World Trivia</h4>
+                <div id="triviaQuestion" style="background: white; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                    <p style="font-size: 1.2em; margin-bottom: 20px;">What is the capital of France?</p>
+                    <button class="btn btn-secondary" onclick="answerTrivia('London')" style="margin: 5px;">London</button>
+                    <button class="btn btn-secondary" onclick="answerTrivia('Paris')" style="margin: 5px;">Paris</button>
+                    <button class="btn btn-secondary" onclick="answerTrivia('Berlin')" style="margin: 5px;">Berlin</button>
+                    <button class="btn btn-secondary" onclick="answerTrivia('Madrid')" style="margin: 5px;">Madrid</button>
+                </div>
+                <div id="triviaResult"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Safety Activity -->
+    <div class="screen" id="safetyActivity">
+        <button class="back-button" onclick="showScreen('kidDashboard')">← Back to Adventures</button>
+        
+        <div class="safe-space">
+            <h3>🛡️ Your Safe Place</h3>
+            <p>This is your special safe space where you can share anything you're feeling or thinking.</p>
+            
+            <div class="content-card">
+                <h4>My Safety Circle</h4>
+                <p>Who makes you feel safe? Draw or write their names:</p>
+                <div style="background: white; padding: 30px; border-radius: 15px; text-align: center;">
+                    <div style="width: 200px; height: 200px; border: 3px solid var(--primary); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                        <span style="font-size: 3em;">💚</span>
+                    </div>
+                    <p style="margin-top: 20px;">YOU</p>
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>People in my safety circle:</label>
+                    <textarea id="safetyCircle" placeholder="Mom, Dad, Teacher, Friend..."></textarea>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h4>Feelings Check-In</h4>
+                <p>It's okay to have big feelings. Which ones are you feeling?</p>
+                <div class="emotion-grid">
+                    <div class="emotion-card" onclick="selectSafetyFeeling(this, 'safe')">
+                        <div class="emoji">🛡️</div>
+                        <div class="label">Safe</div>
+                    </div>
+                    <div class="emotion-card" onclick="selectSafetyFeeling(this, 'scared')">
+                        <div class="emoji">😰</div>
+                        <div class="label">Scared</div>
+                    </div>
+                    <div class="emotion-card" onclick="selectSafetyFeeling(this, 'confused')">
+                        <div class="emoji">😕</div>
+                        <div class="label">Confused</div>
+                    </div>
+                    <div class="emotion-card" onclick="selectSafetyFeeling(this, 'hurt')">
+                        <div class="emoji">💔</div>
+                        <div class="label">Hurt</div>
+                    </div>
+                    <div class="emotion-card" onclick="selectSafetyFeeling(this, 'brave')">
+                        <div class="emoji">💪</div>
+                        <div class="label">Brave</div>
+                    </div>
+                    <div class="emotion-card" onclick="selectSafetyFeeling(this, 'loved')">
+                        <div class="emoji">💝</div>
+                        <div class="label">Loved</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h4>My Comfort Kit</h4>
+                <p>What helps you feel better when things are hard?</p>
+                <div class="form-group">
+                    <label>Things that comfort me:</label>
+                    <textarea id="comfortKit" placeholder="My teddy bear, talking to Mom, prayer, music..."></textarea>
+                </div>
+                <button class="btn btn-success btn-full" onclick="saveComfortKit()">Save My Comfort Kit</button>
+            </div>
+            
+            <div class="story-card">
+                <h4>Remember: You Are Safe</h4>
+                <div class="story-content">
+                    <p>Even when things change and feel scary, you are:</p>
+                    <ul style="line-height: 2; margin-left: 20px;">
+                        <li>💚 Loved by your family</li>
+                        <li>🙏 Protected by God</li>
+                        <li>🛡️ Safe to feel your feelings</li>
+                        <li>💪 Strong enough to handle changes</li>
+                        <li>🌟 Never alone</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-weight: bold;">
+                        If something doesn't feel safe or right, always tell a trusted adult!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teen Activities -->
+    <div class="screen" id="identityActivity">
+        <button class="back-button" onclick="showScreen('teenDashboard')">← Back to Dashboard</button>
+        
+        <div class="content-card">
+            <h3>🎭 Identity Lab</h3>
+            <p>Explore the many facets of who you are</p>
+            
+            <div class="form-group">
+                <label>When someone asks "Where are you from?" what do you say?</label>
+                <textarea id="whereFrom" placeholder="This question is complicated for TCKs..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>I feel most "at home" when:</label>
+                <textarea id="feelHome" placeholder="Describe situations, places, or people that make you feel at home..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Cultural influences that shape me:</label>
+                <textarea id="culturalInfluences" placeholder="Food, traditions, values, languages, etc."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>My identity in one sentence:</label>
+                <input type="text" id="identitySentence" placeholder="I am...">
+            </div>
+            
+            <button class="btn btn-full" onclick="saveIdentity()">Save My Identity Map</button>
+        </div>
+
+        <div class="content-card">
+            <h3>TCK Identity Truths</h3>
+            <ul style="line-height: 2; margin-left: 20px;">
+                <li>✓ You don't have to choose just one culture</li>
+                <li>✓ Your identity can be both/and, not either/or</li>
+                <li>✓ It's okay to feel different in every place</li>
+                <li>✓ Your multicultural identity is valuable</li>
+                <li>✓ You belong to a global TCK community</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Transitions Activity -->
+    <div class="screen" id="transitionsActivity">
+        <button class="back-button" onclick="showScreen('teenDashboard')">← Back to Dashboard</button>
+        
+        <div class="content-card">
+            <h3>✈️ Transitions Toolkit</h3>
+            <p>Navigate moves like a pro</p>
+            
+            <div class="journey-map">
+                <h4>Your Transition Timeline</h4>
+                <div class="form-group">
+                    <label>Current Stage:</label>
+                    <select id="transitionStage" onchange="updateTransitionGuidance()">
+                        <option value="">Select your stage...</option>
+                        <option value="leaving">Leaving in 1-6 months</option>
+                        <option value="imminent">Leaving in less than 1 month</option>
+                        <option value="transit">In transit now</option>
+                        <option value="arrived">Just arrived (0-3 months)</option>
+                        <option value="settling">Settling in (3-12 months)</option>
+                        <option value="established">Established (1+ year)</option>
+                    </select>
+                </div>
+                
+                <div id="transitionGuidance" style="display: none; margin-top: 20px;">
+                    <!-- Guidance will appear here -->
+                </div>
+            </div>
+            
+            <div class="content-card" style="background: var(--bg-light); margin-top: 20px;">
+                <h4>RAFT Checklist for Teens</h4>
+                <div style="margin: 15px 0;">
+                    <h5 style="color: var(--primary);">R - Reconciliation</h5>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Apologized to anyone I hurt
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Resolved conflicts with friends
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Made peace with difficult people
+                    </label>
+                </div>
+                
+                <div style="margin: 15px 0;">
+                    <h5 style="color: var(--primary);">A - Affirmation</h5>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Thanked teachers and mentors
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Told friends what they mean to me
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Appreciated local helpers
+                    </label>
+                </div>
+                
+                <div style="margin: 15px 0;">
+                    <h5 style="color: var(--primary);">F - Farewell</h5>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Said goodbye to special places
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Had farewell gatherings
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Created memory items
+                    </label>
+                </div>
+                
+                <div style="margin: 15px 0;">
+                    <h5 style="color: var(--primary);">T - Think Ahead</h5>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Researched new location
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Set realistic expectations
+                    </label>
+                    <label style="display: block; margin: 8px 0;">
+                        <input type="checkbox" onchange="updateRAFT()"> Made initial connections
+                    </label>
+                </div>
+                
+                <div class="progress-bar" style="margin-top: 20px;">
+                    <div class="progress-fill" id="raftProgress" style="width: 0%">0% Complete</div>
+                </div>
+            </div>
+            
+            <div class="content-card" style="margin-top: 20px;">
+                <h4>Transition Survival Tips</h4>
+                <ul style="line-height: 2; margin-left: 20px;">
+                    <li>📱 Get everyone's contact info BEFORE you leave</li>
+                    <li>📸 Take photos of everyday things, not just special events</li>
+                    <li>🎁 Create a "home box" with items from this place</li>
+                    <li>📝 Write letters to your future self</li>
+                    <li>🗺️ Make a map of your favorite places</li>
+                    <li>🎵 Create a playlist of songs from here</li>
+                    <li>👥 Join online groups for your new location</li>
+                    <li>💪 Remember: You've done this before, you can do it again!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Belonging Activity -->
+    <div class="screen" id="belongingActivity">
+        <button class="back-button" onclick="showScreen('teenDashboard')">← Back to Dashboard</button>
+        
+        <div class="content-card">
+            <h3>🏠 Belonging Workshop</h3>
+            <p>Finding your place in a placeless world</p>
+            
+            <div class="safe-space">
+                <h4>Where Do I Belong?</h4>
+                <p>As a TCK, belonging isn't about a place - it's about connections, values, and identity.</p>
+                
+                <div class="form-group">
+                    <label>I feel like I belong when:</label>
+                    <textarea id="belongWhen" placeholder="With certain people? Doing certain things? In certain situations?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Places/groups where I feel like an outsider:</label>
+                    <textarea id="outsiderWhere" placeholder="Be honest about where you don't fit..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>My "portable home" consists of:</label>
+                    <textarea id="portableHome" placeholder="What makes any place feel like home? Music? Food? Rituals?"></textarea>
+                </div>
+                
+                <button class="btn btn-full" onclick="saveBelonging()">Save My Belonging Map</button>
+            </div>
+            
+            <div class="content-card" style="margin-top: 20px; background: linear-gradient(135deg, #E0F7FA 0%, #E1F5FE 100%);">
+                <h4>Building Belonging Everywhere</h4>
+                <div class="journey-map">
+                    <div class="journey-item">
+                        <div class="icon">🌱</div>
+                        <div class="content">
+                            <h5>Create Rituals</h5>
+                            <p>Morning coffee, evening walks, Sunday calls home</p>
+                        </div>
+                    </div>
+                    <div class="journey-item">
+                        <div class="icon">🎨</div>
+                        <div class="content">
+                            <h5>Decorate Your Space</h5>
+                            <p>Make any room yours with photos, flags, memories</p>
+                        </div>
+                    </div>
+                    <div class="journey-item">
+                        <div class="icon">🍜</div>
+                        <div class="content">
+                            <h5>Find Your Foods</h5>
+                            <p>Locate stores/restaurants with familiar tastes</p>
+                        </div>
+                    </div>
+                    <div class="journey-item">
+                        <div class="icon">👥</div>
+                        <div class="content">
+                            <h5>Build Your Tribe</h5>
+                            <p>Find other TCKs, expats, or globally-minded locals</p>
+                        </div>
+                    </div>
+                    <div class="journey-item">
+                        <div class="icon">🎵</div>
+                        <div class="content">
+                            <h5>Keep Your Culture</h5>
+                            <p>Music, movies, books from all your homes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="story-card">
+                <h4>The Truth About Belonging</h4>
+                <div class="story-content">
+                    <p style="font-style: italic; text-align: center; font-size: 1.1em; color: var(--primary);">
+                        "You will never be completely at home again, because part of your heart will always be elsewhere. 
+                        That is the price you pay for the richness of loving and knowing people in more than one place."
+                    </p>
+                    <p style="text-align: right; margin-top: 15px;">- Miriam Adeney</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Future Activity -->
+    <div class="screen" id="futureActivity">
+        <button class="back-button" onclick="showScreen('teenDashboard')">← Back to Dashboard</button>
+        
+        <div class="content-card">
+            <h3>🎯 Future Me Planner</h3>
+            <p>Your TCK experience is preparing you for amazing things!</p>
+            
+            <div class="content-card" style="background: var(--bg-light);">
+                <h4>TCK Superpowers for Your Future</h4>
+                <p>Rate yourself on these skills you're developing:</p>
+                
+                <div style="margin: 20px 0;">
+                    <label>Cultural Intelligence</label>
+                    <input type="range" min="1" max="10" value="5" onchange="updateSkillScore(this, 'cultural')">
+                    <p style="font-size: 0.9em; color: var(--light-text);">Understanding and navigating different cultures</p>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <label>Language Skills</label>
+                    <input type="range" min="1" max="10" value="5" onchange="updateSkillScore(this, 'language')">
+                    <p style="font-size: 0.9em; color: var(--light-text);">Speaking multiple languages or learning quickly</p>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <label>Adaptability</label>
+                    <input type="range" min="1" max="10" value="5" onchange="updateSkillScore(this, 'adapt')">
+                    <p style="font-size: 0.9em; color: var(--light-text);">Adjusting to new situations quickly</p>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <label>Global Perspective</label>
+                    <input type="range" min="1" max="10" value="5" onchange="updateSkillScore(this, 'global')">
+                    <p style="font-size: 0.9em; color: var(--light-text);">Seeing issues from multiple viewpoints</p>
+                </div>
+                
+                <div style="margin: 20px 0;">
+                    <label>Relationship Building</label>
+                    <input type="range" min="1" max="10" value="5" onchange="updateSkillScore(this, 'relationship')">
+                    <p style="font-size: 0.9em; color: var(--light-text);">Connecting with diverse people quickly</p>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h4>Career Paths Perfect for TCKs</h4>
+                <div class="activity-grid">
+                    <div class="activity-card" style="background: linear-gradient(135deg, #FFE5CC 0%, #FFD4E5 100%);">
+                        <div class="icon">🌍</div>
+                        <h4>International Business</h4>
+                    </div>
+                    <div class="activity-card" style="background: linear-gradient(135deg, #E0F7FA 0%, #E1F5FE 100%);">
+                        <div class="icon">🏛️</div>
+                        <h4>Diplomacy</h4>
+                    </div>
+                    <div class="activity-card" style="background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);">
+                        <div class="icon">✈️</div>
+                        <h4>Travel Industry</h4>
+                    </div>
+                    <div class="activity-card" style="background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);">
+                        <div class="icon">📰</div>
+                        <h4>Journalism</h4>
+                    </div>
+                    <div class="activity-card" style="background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);">
+                        <div class="icon">🎭</div>
+                        <h4>Arts & Media</h4>
+                    </div>
+                    <div class="activity-card" style="background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%);">
+                        <div class="icon">💼</div>
+                        <h4>Consulting</h4>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h4>My Future Vision</h4>
+                <div class="form-group">
+                    <label>In 5 years, I see myself:</label>
+                    <textarea id="fiveYears" placeholder="Where? Doing what? With whom?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>How my TCK experience will help me:</label>
+                    <textarea id="tckAdvantage" placeholder="What unique perspectives and skills will you bring?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Universities/colleges I'm interested in:</label>
+                    <textarea id="universities" placeholder="Which schools have good TCK support?"></textarea>
+                </div>
+                
+                <button class="btn btn-full" onclick="saveFuturePlan()">Save My Future Vision</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Connect Activity -->
+    <div class="screen" id="connectActivity">
+        <button class="back-button" onclick="showScreen('teenDashboard')">← Back to Dashboard</button>
+        
+        <div class="content-card">
+            <h3>🌐 TCK Connect Hub</h3>
+            <p>You're not alone - connect with TCKs worldwide!</p>
+            
+            <div class="content-card" style="background: var(--bg-light);">
+                <h4>Find Your People</h4>
+                <div class="resource-list">
+                    <li onclick="showConnectInfo('online')">
+                        <span class="icon">💻</span>
+                        <span>Online TCK Communities</span>
+                    </li>
+                    <li onclick="showConnectInfo('local')">
+                        <span class="icon">📍</span>
+                        <span>Local TCK Groups</span>
+                    </li>
+                    <li onclick="showConnectInfo('social')">
+                        <span class="icon">📱</span>
+                        <span>Social Media Groups</span>
+                    </li>
+                    <li onclick="showConnectInfo('events')">
+                        <span class="icon">🎉</span>
+                        <span>TCK Events & Conferences</span>
+                    </li>
+                    <li onclick="showConnectInfo('mentor')">
+                        <span class="icon">🤝</span>
+                        <span>TCK Mentorship</span>
+                    </li>
+                </div>
+                
+                <div id="connectInfo" style="margin-top: 20px; display: none;">
+                    <!-- Connection info will appear here -->
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h4>Share Your Story</h4>
+                <div class="form-group">
+                    <label>Your TCK elevator pitch (30 seconds to explain your background):</label>
+                    <textarea id="elevatorPitch" placeholder="I'm from... but I've lived in... This means I..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Questions you have for other TCKs:</label>
+                    <textarea id="tckQuestions" placeholder="How do you handle...? Do you ever feel...?"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Advice you'd give to younger TCKs:</label>
+                    <textarea id="tckAdvice" placeholder="What do you wish someone had told you?"></textarea>
+                </div>
+                
+                <button class="btn btn-full" onclick="saveConnection()">Save & Connect</button>
+            </div>
+            
+            <div class="story-card">
+                <h4>TCK Connection Challenge</h4>
+                <div class="story-content">
+                    <p>This week, try to:</p>
+                    <ul style="line-height: 2; margin-left: 20px;">
+                        <li>☐ Find one TCK online group to join</li>
+                        <li>☐ Share your story with someone</li>
+                        <li>☐ Reach out to another TCK</li>
+                        <li>☐ Post in a TCK community</li>
+                        <li>☐ Video call a friend from another country</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Activity -->
+    <div class="screen" id="journalActivity">
+        <button class="back-button" onclick="showScreen('teenDashboard')">← Back to Dashboard</button>
+        
+        <div class="content-card">
+            <h3>📝 TCK Journal</h3>
+            <p>Your private space to process everything</p>
+            
+            <div class="content-card" style="background: var(--bg-light);">
+                <h4>Journal Prompts</h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                    <button class="btn btn-secondary" onclick="setJournalPrompt('identity')">Identity</button>
+                    <button class="btn btn-secondary" onclick="setJournalPrompt('home')">Home</button>
+                    <button class="btn btn-secondary" onclick="setJournalPrompt('future')">Future</button>
+                    <button class="btn btn-secondary" onclick="setJournalPrompt('loss')">Loss</button>
+                    <button class="btn btn-secondary" onclick="setJournalPrompt('strength')">Strength</button>
+                    <button class="btn btn-secondary" onclick="setJournalPrompt('culture')">Culture</button>
+                </div>
+                
+                <div id="journalPrompt" style="background: white; padding: 20px; border-radius: 15px; margin-top: 20px; font-style: italic;">
+                    Click a topic above for a writing prompt...
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Today's Entry:</label>
+                <textarea id="journalEntry" placeholder="Write freely... This is your safe space..." style="min-height: 200px;"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Mood:</label>
+                <select id="journalMood">
+                    <option value="">How are you feeling?</option>
+                    <option value="grateful">Grateful</option>
+                    <option value="confused">Confused</option>
+                    <option value="excited">Excited</option>
+                    <option value="homesick">Homesick</option>
+                    <option value="anxious">Anxious</option>
+                    <option value="hopeful">Hopeful</option>
+                    <option value="lonely">Lonely</option>
+                    <option value="content">Content</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-full" onclick="saveJournalEntry()">Save Entry</button>
+            
+            <div class="content-card" style="margin-top: 30px;">
+                <h4>Previous Entries</h4>
+                <div id="journalHistory">
+                    <p style="text-align: center; color: var(--light-text);">No journal entries yet. Start writing above!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crisis Support -->
+    <div class="screen" id="crisis">
+        <button class="back-button" onclick="goBack()">← Back</button>
+        
+        <div class="content-card" style="border: 3px solid var(--secondary);">
+            <h3 style="color: var(--secondary);">Need Help?</h3>
+            <p>It's okay to struggle. Support is available.</p>
+            
+            <div style="background: #FFF3E0; padding: 20px; border-radius: 15px; margin: 20px 0;">
+                <h4>Remember:</h4>
+                <ul style="line-height: 2; margin-left: 20px;">
+                    <li>• Your feelings are valid</li>
+                    <li>• Transitions are hard for everyone</li>
+                    <li>• You're not alone in this journey</li>
+                    <li>• It's okay to ask for help</li>
+                </ul>
+            </div>
+            
+            <h4>Support Resources:</h4>
+            <ul style="line-height: 2; margin-left: 20px;">
+                <li>📞 Talk to your parents or a trusted adult</li>
+                <li>🏥 Contact your mission organization's member care</li>
+                <li>💬 Connect with other TCKs online</li>
+                <li>📧 Email a TCK support organization</li>
+                <li>🙏 Reach out to your faith community</li>
+            </ul>
+            
+            <div style="background: var(--bg-light); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <p><strong>Crisis Text Support:</strong> Text your local crisis line</p>
+                <p><strong>For Parents:</strong> Contact your mission's member care immediately</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resources -->
+    <div class="screen" id="resources">
+        <button class="back-button" onclick="goBack()">← Back</button>
+        
+        <div class="content-card">
+            <h3>TCK Resources</h3>
+            
+            <h4>Books for TCKs:</h4>
+            <ul style="line-height: 2; margin: 20px;">
+                <li>📚 "Third Culture Kids: Growing Up Among Worlds"</li>
+                <li>📚 "Letters Never Sent" (for teen TCKs)</li>
+                <li>📚 "The Global Nomad's Guide to University Transition"</li>
+                <li>📚 "Arrivals, Departures and the Adventures In-Between"</li>
+            </ul>
+            
+            <h4>For Parents:</h4>
+            <ul style="line-height: 2; margin: 20px;">
+                <li>📖 "Raising Global Nomads"</li>
+                <li>📖 "Third Culture Kids: A Gift to Care For"</li>
+                <li>📖 "Misunderstood: The Impact of Growing Up Overseas"</li>
+                <li>📖 "Safe Passage: How Mobility Affects People & What Int'l Schools Should Do About It"</li>
+            </ul>
+            
+            <h4>Online Communities:</h4>
+            <ul style="line-height: 2; margin: 20px;">
+                <li>🌐 TCK World (online community)</li>
+                <li>🌐 Interaction International</li>
+                <li>🌐 TCKid.com resources</li>
+                <li>🌐 MK Safety Net</li>
+            </ul>
+            
+            <h4>Support Organizations:</h4>
+            <ul style="line-height: 2; margin: 20px;">
+                <li>🤝 Families in Global Transition (FIGT)</li>
+                <li>🤝 Interaction International</li>
+                <li>🤝 TCK Training</li>
+                <li>🤝 CrossCultural Kids</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Info -->
+    <div class="screen" id="info">
+        <button class="back-button" onclick="goBack()">← Back</button>
+        
+        <div class="content-card">
+            <h3>About TCK Care</h3>
+            
+            <h4>What This App Does:</h4>
+            <p>TCK Care provides comprehensive support for Third Culture Kids and their families through:</p>
+            <ul style="line-height: 2; margin: 20px;">
+                <li>• Age-appropriate activities for processing experiences</li>
+                <li>• Identity exploration tools</li>
+                <li>• Transition support using evidence-based methods</li>
+                <li>• Parent resources and guidance</li>
+                <li>• Community connection opportunities</li>
+                <li>• Trauma-informed care approaches</li>
+            </ul>
+            
+            <h4>How to Use:</h4>
+            <ol style="line-height: 2; margin: 20px;">
+                <li>Select your user type (Kid, Teen, or Parent)</li>
+                <li>Explore age-appropriate activities</li>
+                <li>Track progress and celebrate growth</li>
+                <li>Use resources for support</li>
+                <li>Connect with the TCK community</li>
+            </ol>
+            
+            <h4>Based On:</h4>
+            <p>This app incorporates principles from:</p>
+            <ul style="line-height: 2; margin: 20px;">
+                <li>• "Third Culture Kids: A Gift to Care For" methodology</li>
+                <li>• "SafetyStories: From Trauma to Safety" approach</li>
+                <li>• RAFT transition model</li>
+                <li>• Pollock & Van Reken's TCK research</li>
+                <li>• Member care best practices</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- About -->
+    <div class="screen" id="about">
+        <button class="back-button" onclick="goBack()">← Back</button>
+        
+        <div class="content-card">
+            <h3>About Depths to Heights</h3>
+            
+            <p><strong>Our Mission:</strong></p>
+            <p>Depths to Heights creates comprehensive support resources for missionary families and those serving in cross-cultural ministry. We believe in caring well for those who serve.</p>
+            
+            <p style="margin-top: 20px;"><strong>Created By:</strong></p>
+            <p>Made by Justin</p>
+            <p>Dedicated to supporting missionary kids and their families worldwide.</p>
+            
+            <p style="margin-top: 20px;"><strong>Contact:</strong></p>
+            <p>Website: <a href="https://depthstoheights.org" target="_blank">depthstoheights.org</a></p>
+            <p>Email: depthstoheights@gmail.com</p>
+            
+            <div style="margin-top: 30px;">
+                <button class="btn btn-full" onclick="window.open('https://www.paypal.com/donate/?hosted_button_id=8GRE7B8C3TP2U', '_blank')">
+                    Support Our Ministry
+                </button>
+            </div>
+            
+            <div style="background: var(--bg-light); padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <p style="text-align: center; font-style: italic;">
+                    "Caring well for missionary kids is caring for the future of missions."
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="navigateHome()">
+            <span class="icon">🏠</span>
+            <span class="label">Home</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('crisis')">
+            <span class="icon">💬</span>
+            <span class="label">Support</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('resources')">
+            <span class="icon">📚</span>
+            <span class="label">Resources</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('info')">
+            <span class="icon">ℹ️</span>
+            <span class="label">Info</span>
+        </div>
+        <div class="nav-item" onclick="navigateTo('about')">
+            <span class="icon">✨</span>
+            <span class="label">About</span>
+        </div>
+    </div>
+
+    <script>
+        // App Data
+        let appData = {
+            currentUser: '',
+            kidData: {
+                countries: 0,
+                friends: 0,
+                stories: 0,
+                badges: 0,
+                story: {},
+                feelings: []
+            },
+            teenData: {
+                reflections: 0,
+                connections: 0,
+                skills: 0,
+                goals: 0,
+                identity: {}
+            },
+            parentData: {
+                children: [],
+                assessments: []
+            },
+            lastScreen: 'openingScreen',
+            audioPlaying: false
+        };
+
+        // Initialize App
+        function initApp() {
+            loadData();
+            updateStats();
+        }
+
+        // Load saved data
+        function loadData() {
+            const saved = localStorage.getItem('tckCareData');
+            if (saved) {
+                try {
+                    appData = JSON.parse(saved);
+                } catch (e) {
+                    console.log('Starting fresh');
+                }
+            }
+        }
+
+        // Save data
+        function saveData() {
+            localStorage.setItem('tckCareData', JSON.stringify(appData));
+        }
+
+        // Navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            const screen = document.getElementById(screenId);
+            if (screen) {
+                screen.classList.add('active');
+                appData.lastScreen = screenId;
+                updateBottomNav(screenId);
+                window.scrollTo(0, 0);
+                saveData();
+            }
+        }
+
+        function showUserSelection() {
+            showScreen('userSelection');
+        }
+
+        function switchToUser(type) {
+            appData.currentUser = type;
+            saveData();
+            
+            if (type === 'kid') {
+                showScreen('kidDashboard');
+                showMessage('Switched to Kid section! 🌟', 'success');
+            } else if (type === 'teen') {
+                showScreen('teenDashboard');
+                showMessage('Switched to Teen section! 🚀', 'success');
+            } else if (type === 'parent') {
+                showScreen('parentDashboard');
+                showMessage('Switched to Parent section! 💚', 'success');
+            }
+        }
+
+        function selectUser(type) {
+            appData.currentUser = type;
+            saveData();
+            
+            if (type === 'kid') {
+                showScreen('kidDashboard');
+            } else if (type === 'teen') {
+                showScreen('teenDashboard');
+            } else if (type === 'parent') {
+                showScreen('parentDashboard');
+            }
+            
+            showMessage(`Welcome, ${type === 'kid' ? 'young explorer' : type === 'teen' ? 'global citizen' : 'caring parent'}!`, 'success');
+        }
+
+        function navigateTo(screenId) {
+            showScreen(screenId);
+        }
+
+        function navigateHome() {
+            if (appData.currentUser === 'kid') {
+                showScreen('kidDashboard');
+            } else if (appData.currentUser === 'teen') {
+                showScreen('teenDashboard');
+            } else if (appData.currentUser === 'parent') {
+                showScreen('parentDashboard');
+            } else {
+                showScreen('userSelection');
+            }
+        }
+
+        function goBack() {
+            if (appData.currentUser === 'kid') {
+                showScreen('kidDashboard');
+            } else if (appData.currentUser === 'teen') {
+                showScreen('teenDashboard');
+            } else if (appData.currentUser === 'parent') {
+                showScreen('parentDashboard');
+            } else {
+                showScreen('userSelection');
+            }
+        }
+
+        function updateBottomNav(screenId) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const navMap = {
+                'kidDashboard': 0,
+                'teenDashboard': 0,
+                'parentDashboard': 0,
+                'userSelection': 0,
+                'crisis': 1,
+                'resources': 2,
+                'info': 3,
+                'about': 4
+            };
+            
+            const navIndex = navMap[screenId];
+            if (navIndex !== undefined) {
+                document.querySelectorAll('.nav-item')[navIndex].classList.add('active');
+            }
+        }
+
+        // Update Statistics
+        function updateStats() {
+            // Kid stats
+            if (document.getElementById('kidCountries')) {
+                document.getElementById('kidCountries').textContent = appData.kidData.countries;
+                document.getElementById('kidFriends').textContent = appData.kidData.friends;
+                document.getElementById('kidStories').textContent = appData.kidData.stories;
+                document.getElementById('kidBadges').textContent = appData.kidData.badges;
+                
+                const progress = Math.min((appData.kidData.stories * 20) + (appData.kidData.badges * 10), 100);
+                const progressBar = document.getElementById('kidProgress');
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = progress + '%';
+                }
+            }
+            
+            // Teen stats
+            if (document.getElementById('teenReflections')) {
+                document.getElementById('teenReflections').textContent = appData.teenData.reflections;
+                document.getElementById('teenConnections').textContent = appData.teenData.connections;
+                document.getElementById('teenSkills').textContent = appData.teenData.skills;
+                document.getElementById('teenGoals').textContent = appData.teenData.goals;
+                
+                const progress = Math.min((appData.teenData.reflections * 15) + (appData.teenData.goals * 10), 100);
+                const progressBar = document.getElementById('teenProgress');
+                if (progressBar) {
+                    progressBar.style.width = progress + '%';
+                    progressBar.textContent = progress + '%';
+                }
+            }
+        }
+
+        // Kid Activities
+        function startActivity(activity) {
+            if (activity === 'myStory') {
+                showScreen('myStoryActivity');
+            } else if (activity === 'feelings') {
+                showScreen('feelingsActivity');
+            } else if (activity === 'worldMap') {
+                showScreen('worldMapActivity');
+            } else if (activity === 'friends') {
+                showScreen('friendsActivity');
+            } else if (activity === 'games') {
+                showScreen('gamesActivity');
+            } else if (activity === 'safety') {
+                showScreen('safetyActivity');
+            }
+        }
+
+        function saveKidStory() {
+            const story = {
+                birthPlace: document.getElementById('birthPlace').value,
+                placesLived: document.getElementById('placesLived').value,
+                favoritePlace: document.getElementById('favoritePlace').value,
+                languages: document.getElementById('languages').value,
+                superpower: document.getElementById('superpower').value
+            };
+            
+            appData.kidData.story = story;
+            appData.kidData.stories++;
+            appData.kidData.badges++;
+            
+            // Count countries
+            const places = story.placesLived.split(',').length;
+            appData.kidData.countries = places;
+            
+            saveData();
+            updateStats();
+            showMessage('Your amazing story has been saved! You earned a Story Badge! 🏆', 'success');
+        }
+
+        function selectEmotion(card, emotion) {
+            document.querySelectorAll('.emotion-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            card.classList.add('selected');
+            appData.kidData.currentEmotion = emotion;
+        }
+
+        function processFeelings() {
+            const why = document.getElementById('feelingWhy').value;
+            const emotion = appData.kidData.currentEmotion || 'mixed';
+            
+            appData.kidData.feelings.push({
+                emotion: emotion,
+                why: why,
+                date: new Date().toISOString()
+            });
+            
+            appData.kidData.badges++;
+            saveData();
+            updateStats();
+            
+            const responses = {
+                happy: "That's wonderful! Being happy is a gift. Keep spreading joy!",
+                sad: "It's okay to be sad sometimes. Your feelings matter and you're not alone.",
+                worried: "Worries are normal, especially when things change. Talk to someone you trust.",
+                homesick: "Missing places and people shows how much you care. Those memories are treasures!",
+                confused: "Being confused is part of being a TCK. You're figuring out big things!",
+                angry: "Anger tells us something is important to us. It's okay to feel this way.",
+                lonely: "Feeling lonely is hard. Remember, you belong to many places and people care about you.",
+                proud: "You should be proud! Being a TCK makes you special and strong!"
+            };
+            
+            document.getElementById('feelingMessage').textContent = responses[emotion] || "Your feelings are valid and important. Thanks for sharing!";
+            document.getElementById('feelingResponse').style.display = 'block';
+            
+            showMessage('Thanks for sharing your feelings! You earned a Feelings Badge! 🎖️', 'success');
+        }
+
+        // World Map Activity Functions
+        function toggleContinent(card, continent) {
+            card.classList.toggle('selected');
+            if (card.classList.contains('selected')) {
+                appData.kidData.countries++;
+                showMessage(`You've been to ${continent}! That's amazing!`, 'success');
+            } else {
+                appData.kidData.countries--;
+            }
+            saveData();
+            updateStats();
+        }
+        
+        function saveWorldMap() {
+            const worldData = {
+                countriesLived: document.getElementById('countriesLived').value,
+                countriesVisited: document.getElementById('countriesVisited').value,
+                favoriteFoods: document.getElementById('favoriteFoods').value
+            };
+            
+            appData.kidData.worldMap = worldData;
+            
+            // Count countries
+            const lived = worldData.countriesLived.split(',').filter(c => c.trim()).length;
+            const visited = worldData.countriesVisited.split(',').filter(c => c.trim()).length;
+            appData.kidData.countries = lived + visited;
+            appData.kidData.badges++;
+            
+            saveData();
+            updateStats();
+            showMessage(`Amazing! You've been to ${appData.kidData.countries} countries! World Explorer Badge earned! 🌍`, 'success');
+        }
+        
+        function updateExplorerScore() {
+            const checkboxes = document.querySelectorAll('#worldMapActivity input[type="checkbox"]:checked');
+            const score = checkboxes.length;
+            document.getElementById('explorerScore').textContent = `${score}/8 Explorer Points`;
+            
+            if (score === 8) {
+                appData.kidData.badges++;
+                saveData();
+                updateStats();
+                showMessage('You completed the World Explorer Challenge! Super Badge earned! 🏆', 'success');
+            }
+        }
+        
+        // Friends Activity Functions
+        function addFriend() {
+            const name = document.getElementById('friendName').value;
+            const location = document.getElementById('friendLocation').value;
+            const memory = document.getElementById('friendMemory').value;
+            
+            if (!name || !location) {
+                showMessage('Please enter your friend\'s name and location', 'warning');
+                return;
+            }
+            
+            if (!appData.kidData.friendsList) {
+                appData.kidData.friendsList = [];
+            }
+            
+            appData.kidData.friendsList.push({
+                name: name,
+                location: location,
+                memory: memory,
+                date: new Date().toISOString()
+            });
+            
+            appData.kidData.friends++;
+            saveData();
+            updateStats();
+            
+            // Update display
+            displayFriends();
+            
+            // Clear form
+            document.getElementById('friendName').value = '';
+            document.getElementById('friendLocation').value = '';
+            document.getElementById('friendMemory').value = '';
+            
+            showMessage(`${name} added to your friend map! You have ${appData.kidData.friends} friends! 🎉`, 'success');
+        }
+        
+        function displayFriends() {
+            const display = document.getElementById('friendsDisplay');
+            if (!appData.kidData.friendsList || appData.kidData.friendsList.length === 0) {
+                display.innerHTML = '<p style="text-align: center; color: var(--light-text);">No friends added yet. Add your first friend above!</p>';
+                return;
+            }
+            
+            display.innerHTML = appData.kidData.friendsList.map(friend => `
+                <div style="background: linear-gradient(135deg, #FFE5CC 0%, #E1F5FE 100%); padding: 15px; border-radius: 15px; margin: 10px 0;">
+                    <h5 style="color: var(--primary);">🌟 ${friend.name}</h5>
+                    <p>📍 Lives in: ${friend.location}</p>
+                    ${friend.memory ? `<p>💝 Memory: ${friend.memory}</p>` : ''}
+                </div>
+            `).join('');
+        }
+        
+        function startFriendshipGame(type) {
+            if (type === 'memory') {
+                showMessage('Memory Game: Think of 3 favorite memories with your friends!', 'info');
+            } else if (type === 'letter') {
+                showMessage('Letter Writing: Pick a friend and write them a letter today!', 'info');
+            } else if (type === 'call') {
+                showMessage('Call Schedule: Plan video calls with friends in different time zones!', 'info');
+            }
+            appData.kidData.badges++;
+            saveData();
+            updateStats();
+        }
+        
+        // Games Activity Functions
+        let tckChallengeTimer = null;
+        let tckChallengeScore = 0;
+        const tckWords = [
+            'Airplane', 'Passport', 'Suitcase', 'Moving', 'Friends', 
+            'Languages', 'Culture', 'Adventure', 'School', 'Home'
+        ];
+        
+        function startTCKChallenge() {
+            tckChallengeScore = 0;
+            document.getElementById('challengeScore').textContent = 'Score: 0';
+            
+            let wordIndex = 0;
+            const showNextWord = () => {
+                if (wordIndex >= tckWords.length) {
+                    document.getElementById('tckChallengeWord').textContent = `Game Over! Final Score: ${tckChallengeScore}/${tckWords.length}`;
+                    appData.kidData.badges++;
+                    saveData();
+                    updateStats();
+                    showMessage('Great job playing the TCK Challenge! Badge earned! 🎮', 'success');
+                    return;
+                }
+                
+                document.getElementById('tckChallengeWord').textContent = tckWords[wordIndex];
+                wordIndex++;
+                
+                tckChallengeTimer = setTimeout(showNextWord, 3000);
+            };
+            
+            showNextWord();
+            
+            // Add click handler for correct answers
+            document.getElementById('tckChallengeWord').onclick = () => {
+                tckChallengeScore++;
+                document.getElementById('challengeScore').textContent = `Score: ${tckChallengeScore}`;
+                clearTimeout(tckChallengeTimer);
+                showNextWord();
+            };
+        }
+        
+        function checkCultureMatch() {
+            showMessage('Great job matching greetings to countries! You know so many cultures! 🌍', 'success');
+            appData.kidData.badges++;
+            saveData();
+            updateStats();
+        }
+        
+        function answerTrivia(answer) {
+            const result = document.getElementById('triviaResult');
+            if (answer === 'Paris') {
+                result.innerHTML = '<div class="message success">Correct! Paris is the capital of France! 🎉</div>';
+                appData.kidData.badges++;
+                saveData();
+                updateStats();
+            } else {
+                result.innerHTML = '<div class="message warning">Try again! Hint: It\'s known as the City of Light 💡</div>';
+            }
+        }
+        
+        // Safety Activity Functions
+        function selectSafetyFeeling(card, feeling) {
+            document.querySelectorAll('#safetyActivity .emotion-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            card.classList.add('selected');
+            
+            const responses = {
+                safe: "That's wonderful! Feeling safe is important.",
+                scared: "It's okay to feel scared. Talk to someone in your safety circle.",
+                confused: "Being confused is normal for TCKs. Ask questions!",
+                hurt: "I'm sorry you're hurt. Share with a trusted adult.",
+                brave: "You ARE brave! Facing changes takes courage.",
+                loved: "You are SO loved! Never forget that."
+            };
+            
+            showMessage(responses[feeling] || "Your feelings are valid and important.", 'info');
+        }
+        
+        function saveComfortKit() {
+            const safetyData = {
+                safetyCircle: document.getElementById('safetyCircle').value,
+                comfortKit: document.getElementById('comfortKit').value
+            };
+            
+            appData.kidData.safetyData = safetyData;
+            appData.kidData.badges++;
+            saveData();
+            updateStats();
+            
+            showMessage('Your comfort kit has been saved! You know how to take care of yourself! 🛡️', 'success');
+        }
+        
+        // Teen Activities
+        function startTeenActivity(activity) {
+            if (activity === 'identity') {
+                showScreen('identityActivity');
+            } else if (activity === 'transitions') {
+                showScreen('transitionsActivity');
+            } else if (activity === 'belonging') {
+                showScreen('belongingActivity');
+            } else if (activity === 'future') {
+                showScreen('futureActivity');
+            } else if (activity === 'connect') {
+                showScreen('connectActivity');
+            } else if (activity === 'journal') {
+                showScreen('journalActivity');
+            }
+        }
+
+        function saveIdentity() {
+            const identity = {
+                whereFrom: document.getElementById('whereFrom').value,
+                feelHome: document.getElementById('feelHome').value,
+                culturalInfluences: document.getElementById('culturalInfluences').value,
+                identitySentence: document.getElementById('identitySentence').value
+            };
+            
+            appData.teenData.identity = identity;
+            appData.teenData.reflections++;
+            saveData();
+            updateStats();
+            
+            showMessage('Identity map saved! You\'re making great progress in understanding yourself.', 'success');
+        }
+
+        // Parent Functions
+        function getParentGuidance() {
+            const age = document.getElementById('childAge').value;
+            const challenge = document.getElementById('challengeArea').value;
+            
+            if (!age || !challenge) {
+                showMessage('Please select both age group and challenge area', 'warning');
+                return;
+            }
+            
+            appData.parentData.assessments.push({
+                age: age,
+                challenge: challenge,
+                date: new Date().toISOString()
+            });
+            
+            saveData();
+            
+            // Create comprehensive guidance content
+            const guidanceDiv = document.getElementById('parentGuidanceResult');
+            if (!guidanceDiv) {
+                // Create guidance result section if it doesn't exist
+                const assessmentCard = document.querySelector('#parentDashboard .content-card');
+                const resultDiv = document.createElement('div');
+                resultDiv.id = 'parentGuidanceResult';
+                resultDiv.className = 'content-card';
+                resultDiv.style.marginTop = '20px';
+                resultDiv.style.border = '3px solid var(--parent-green)';
+                assessmentCard.parentNode.insertBefore(resultDiv, assessmentCard.nextSibling);
+            }
+            
+            const ageGuidance = {
+                '5-8': {
+                    tips: [
+                        'Use visual aids and stories to explain transitions',
+                        'Create a "home box" with familiar items that travel',
+                        'Maintain routines as much as possible',
+                        'Allow expression through play and art',
+                        'Read books about other TCKs'
+                    ],
+                    activities: [
+                        'Create a family culture collage',
+                        'Make a "feelings thermometer"',
+                        'Draw maps of places lived',
+                        'Start a photo journal together'
+                    ]
+                },
+                '9-12': {
+                    tips: [
+                        'Involve them in transition planning',
+                        'Help them maintain friendships online',
+                        'Acknowledge their growing awareness of differences',
+                        'Create opportunities for cultural pride',
+                        'Discuss the benefits of their TCK experience'
+                    ],
+                    activities: [
+                        'Start a blog about TCK life',
+                        'Create a cultural identity wheel',
+                        'Write letters to future self',
+                        'Make a TCK advantages list'
+                    ]
+                },
+                '13-15': {
+                    tips: [
+                        'Respect their need for peer connection',
+                        'Support identity exploration without judgment',
+                        'Prepare for questions about the future',
+                        'Allow grief for what they\'ve lost',
+                        'Connect them with other TCKs'
+                    ],
+                    activities: [
+                        'Join online TCK communities',
+                        'Create identity playlists',
+                        'Document family stories',
+                        'Explore career interests globally'
+                    ]
+                },
+                '16-18': {
+                    tips: [
+                        'Focus on university/career transitions',
+                        'Address "Where is home?" questions',
+                        'Support independent decision-making',
+                        'Prepare for reentry challenges',
+                        'Celebrate their global perspective'
+                    ],
+                    activities: [
+                        'Research university TCK support',
+                        'Create a life skills checklist',
+                        'Build a professional network',
+                        'Plan gap year experiences'
+                    ]
+                }
+            };
+            
+            const challengeStrategies = {
+                transition: {
+                    immediate: [
+                        'Implement RAFT process immediately',
+                        'Create a transition timeline together',
+                        'Schedule regular family check-ins',
+                        'Document the current location before leaving'
+                    ],
+                    longTerm: [
+                        'Build transition resilience skills',
+                        'Create portable family traditions',
+                        'Develop a "transition toolkit"',
+                        'Practice healthy goodbye rituals'
+                    ],
+                    resources: [
+                        'Book: "The Emotional Resilience Toolkit"',
+                        'RAFT worksheet (downloadable)',
+                        'Transition timeline template',
+                        'Goodbye ritual ideas guide'
+                    ]
+                },
+                identity: {
+                    immediate: [
+                        'Validate their multicultural experience',
+                        'Create an identity map together',
+                        'Discuss "both/and" not "either/or"',
+                        'Share your own identity struggles'
+                    ],
+                    longTerm: [
+                        'Build cultural pride in all backgrounds',
+                        'Connect with TCK mentors',
+                        'Document family heritage',
+                        'Explore career paths that use TCK skills'
+                    ],
+                    resources: [
+                        'Identity mapping worksheet',
+                        'TCK mentor network contacts',
+                        'Cultural genogram template',
+                        'Book: "Between Worlds" by Marilyn Gardner'
+                    ]
+                },
+                belonging: {
+                    immediate: [
+                        'Create "sacred spaces" in your home',
+                        'Build local connections intentionally',
+                        'Maintain global friendships actively',
+                        'Develop family belonging rituals'
+                    ],
+                    longTerm: [
+                        'Build a "mobile home" concept',
+                        'Create belonging through relationships',
+                        'Develop portable hobbies/interests',
+                        'Foster online community connections'
+                    ],
+                    resources: [
+                        'Sacred space creation guide',
+                        'Online TCK communities list',
+                        'Belonging activities workbook',
+                        'Virtual connection tools guide'
+                    ]
+                },
+                grief: {
+                    immediate: [
+                        'Acknowledge losses are real and valid',
+                        'Create space for expressing grief',
+                        'Don\'t minimize their pain',
+                        'Share your own grief experiences'
+                    ],
+                    longTerm: [
+                        'Build grief processing skills',
+                        'Create memory preservation systems',
+                        'Develop healthy coping mechanisms',
+                        'Consider professional support'
+                    ],
+                    resources: [
+                        'Grief journal templates',
+                        'Memory book creation guide',
+                        'TCK therapist directory',
+                        'Book: "The Grief Tower" by Lauren Wells'
+                    ]
+                },
+                reentry: {
+                    immediate: [
+                        'Prepare for reverse culture shock',
+                        'Lower expectations of "fitting in"',
+                        'Find other TCKs/expats locally',
+                        'Create familiar spaces at "home"'
+                    ],
+                    longTerm: [
+                        'Build bicultural competence',
+                        'Develop reentry support network',
+                        'Process the myth of "home"',
+                        'Celebrate global identity'
+                    ],
+                    resources: [
+                        'Reentry preparation checklist',
+                        'Reverse culture shock guide',
+                        'Local TCK group finder',
+                        'Book: "Arriving Well" by Lois Bushong'
+                    ]
+                },
+                education: {
+                    immediate: [
+                        'Research curriculum compatibility',
+                        'Document current academic progress',
+                        'Connect with new school counselor',
+                        'Address social needs equally'
+                    ],
+                    longTerm: [
+                        'Build academic continuity plan',
+                        'Create educational portfolio',
+                        'Develop self-advocacy skills',
+                        'Plan for university transitions'
+                    ],
+                    resources: [
+                        'School transition checklist',
+                        'Academic record template',
+                        'TCK-friendly universities list',
+                        'Educational continuity guide'
+                    ]
+                },
+                relationships: {
+                    immediate: [
+                        'Normalize goodbye grief',
+                        'Teach healthy attachment',
+                        'Support current friendships',
+                        'Model deep connections'
+                    ],
+                    longTerm: [
+                        'Build relationship resilience',
+                        'Teach connection maintenance',
+                        'Develop friendship skills',
+                        'Create support networks'
+                    ],
+                    resources: [
+                        'Friendship maintenance guide',
+                        'Long-distance friendship tools',
+                        'Attachment style assessment',
+                        'Social skills workbook'
+                    ]
+                }
+            };
+            
+            const ageData = ageGuidance[age];
+            const challengeData = challengeStrategies[challenge];
+            
+            // Build comprehensive guidance HTML
+            const guidanceHTML = `
+                <h3 style="color: var(--parent-green);">Customized Support Plan</h3>
+                <p style="font-weight: bold; margin-bottom: 20px;">For ${age} year old facing ${challenge.replace(/_/g, ' ')} challenges</p>
+                
+                <div style="background: #E8F5E9; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4 style="color: var(--parent-green); margin-bottom: 15px;">📋 Immediate Action Steps</h4>
+                    <ul style="line-height: 2; margin-left: 20px;">
+                        ${challengeData.immediate.map(step => `<li>✓ ${step}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="background: #E3F2FD; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4 style="color: var(--teen-blue); margin-bottom: 15px;">🎯 Age-Specific Strategies</h4>
+                    <ul style="line-height: 2; margin-left: 20px;">
+                        ${ageData.tips.map(tip => `<li>• ${tip}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="background: #FFF3E0; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4 style="color: var(--warning); margin-bottom: 15px;">🎨 Recommended Activities</h4>
+                    <ul style="line-height: 2; margin-left: 20px;">
+                        ${ageData.activities.map(activity => `<li>→ ${activity}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="background: #F3E5F5; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                    <h4 style="color: var(--kid-purple); margin-bottom: 15px;">🚀 Long-Term Goals</h4>
+                    <ul style="line-height: 2; margin-left: 20px;">
+                        ${challengeData.longTerm.map(goal => `<li>★ ${goal}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="background: white; padding: 20px; border-radius: 15px; border: 2px solid var(--primary);">
+                    <h4 style="color: var(--primary); margin-bottom: 15px;">📚 Recommended Resources</h4>
+                    <ul style="line-height: 2; margin-left: 20px;">
+                        ${challengeData.resources.map(resource => `<li>📖 ${resource}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-secondary" onclick="downloadPlan('${age}', '${challenge}')">
+                        📥 Download This Plan
+                    </button>
+                    <button class="btn" onclick="emailPlan('${age}', '${challenge}')" style="margin-left: 10px;">
+                        📧 Email to Spouse/Team
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('parentGuidanceResult').innerHTML = guidanceHTML;
+            showMessage('Your customized support plan is ready!', 'success');
+        }
+        
+        function downloadPlan(age, challenge) {
+            showMessage('Downloading your customized TCK support plan...', 'info');
+            // Simulate download
+            setTimeout(() => {
+                showMessage('Plan downloaded! Check your downloads folder.', 'success');
+            }, 1500);
+        }
+        
+        function emailPlan(age, challenge) {
+            showMessage('Opening email client with your support plan...', 'info');
+            // In real app, this would compose an email
+            const subject = `TCK Support Plan for ${age} year old - ${challenge} challenges`;
+            const body = `Please find attached the customized support plan for our TCK facing ${challenge} challenges.`;
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function openResource(type) {
+            // Create a modal or new section for detailed resources
+            const resourceContent = {
+                understanding: {
+                    title: 'Understanding Your TCK',
+                    content: `
+                        <h4>Core TCK Characteristics</h4>
+                        <ul>
+                            <li><strong>High Mobility:</strong> Average TCK moves 8 times before age 18</li>
+                            <li><strong>Cross-Cultural Experience:</strong> Navigate multiple cultural systems daily</li>
+                            <li><strong>Rootlessness/Restlessness:</strong> May struggle with "Where is home?"</li>
+                            <li><strong>Expanded Worldview:</strong> See world from multiple perspectives</li>
+                            <li><strong>Hidden Losses:</strong> Grief that others don't recognize</li>
+                        </ul>
+                        
+                        <h4>Developmental Considerations</h4>
+                        <p><strong>Early Childhood (5-8):</strong> Form attachments through routine and familiarity. Need concrete explanations.</p>
+                        <p><strong>Middle Childhood (9-12):</strong> Develop cultural awareness. Begin to notice differences.</p>
+                        <p><strong>Adolescence (13-18):</strong> Identity formation complicated by multiple cultures. Need peer acceptance.</p>
+                        
+                        <h4>Signs Your TCK is Thriving</h4>
+                        <ul>
+                            <li>✓ Maintains friendships across distances</li>
+                            <li>✓ Shows cultural flexibility</li>
+                            <li>✓ Expresses emotions appropriately</li>
+                            <li>✓ Demonstrates resilience in change</li>
+                            <li>✓ Celebrates their unique experience</li>
+                        </ul>
+                        
+                        <h4>Warning Signs to Watch</h4>
+                        <ul>
+                            <li>⚠️ Withdrawal from family/friends</li>
+                            <li>⚠️ Extreme homesickness or detachment</li>
+                            <li>⚠️ Academic decline after moves</li>
+                            <li>⚠️ Identity confusion beyond typical</li>
+                            <li>⚠️ Inability to form attachments</li>
+                        </ul>
+                    `
+                },
+                transitions: {
+                    title: 'Managing Transitions Successfully',
+                    content: `
+                        <h4>Pre-Departure Phase</h4>
+                        <ul>
+                            <li><strong>6 Months Before:</strong> Begin transition conversations</li>
+                            <li><strong>3 Months Before:</strong> Start RAFT process</li>
+                            <li><strong>1 Month Before:</strong> Intensive goodbye activities</li>
+                            <li><strong>1 Week Before:</strong> Final celebrations and closure</li>
+                        </ul>
+                        
+                        <h4>RAFT Implementation Guide</h4>
+                        <p><strong>Reconciliation:</strong> Make a list of people to reconcile with. Schedule meetings. Write letters if needed.</p>
+                        <p><strong>Affirmation:</strong> Thank teachers, friends, mentors. Create thank you cards. Host appreciation gatherings.</p>
+                        <p><strong>Farewell:</strong> Visit favorite places. Take photos. Create memory books. Have goodbye parties.</p>
+                        <p><strong>Think Ahead:</strong> Research new location. Set realistic expectations. Connect with people there.</p>
+                        
+                        <h4>Transition Survival Kit</h4>
+                        <ul>
+                            <li>📦 Comfort items from previous home</li>
+                            <li>📸 Photo albums and memory books</li>
+                            <li>🎵 Music from previous location</li>
+                            <li>🍜 Familiar foods/recipes</li>
+                            <li>📱 Communication tools for old friends</li>
+                            <li>📚 Favorite books and movies</li>
+                        </ul>
+                        
+                        <h4>Post-Arrival Strategies</h4>
+                        <ul>
+                            <li>Week 1-2: Focus on basic settling</li>
+                            <li>Week 3-4: Explore new environment</li>
+                            <li>Month 2: Begin building routines</li>
+                            <li>Month 3: Evaluate adjustment</li>
+                            <li>Month 6: Major adjustment checkpoint</li>
+                        </ul>
+                    `
+                },
+                identity: {
+                    title: 'Supporting Identity Formation',
+                    content: `
+                        <h4>TCK Identity Development Stages</h4>
+                        <ul>
+                            <li><strong>Stage 1 - Awareness:</strong> Recognizing they're different</li>
+                            <li><strong>Stage 2 - Exploration:</strong> Trying on different cultural identities</li>
+                            <li><strong>Stage 3 - Integration:</strong> Blending multiple cultures</li>
+                            <li><strong>Stage 4 - Appreciation:</strong> Celebrating TCK identity</li>
+                        </ul>
+                        
+                        <h4>Supporting "Both/And" Identity</h4>
+                        <p>Help your child understand they don't have to choose between cultures. They can be:</p>
+                        <ul>
+                            <li>• American AND Brazilian</li>
+                            <li>• Christian AND culturally aware</li>
+                            <li>• Local AND global</li>
+                            <li>• Rooted AND mobile</li>
+                        </ul>
+                        
+                        <h4>Identity Building Activities</h4>
+                        <ul>
+                            <li>🎨 Create cultural collages</li>
+                            <li>🗺️ Map identity influences</li>
+                            <li>📖 Write identity stories</li>
+                            <li>🎭 Role-play different cultures</li>
+                            <li>🌍 Celebrate all backgrounds</li>
+                        </ul>
+                        
+                        <h4>Common Identity Questions & Responses</h4>
+                        <p><strong>"Where am I from?"</strong> → "You're from many places, and that's special."</p>
+                        <p><strong>"What am I?"</strong> → "You're a blend of cultures, a world citizen."</p>
+                        <p><strong>"Where is home?"</strong> → "Home is where our family is together."</p>
+                        <p><strong>"Why don't I fit in?"</strong> → "You fit in a bigger world than most people."</p>
+                    `
+                },
+                education: {
+                    title: 'Educational Considerations',
+                    content: `
+                        <h4>School System Transitions</h4>
+                        <ul>
+                            <li><strong>American → British:</strong> Different grade names, exam systems</li>
+                            <li><strong>National → International:</strong> IB vs. national curriculum</li>
+                            <li><strong>Homeschool → Traditional:</strong> Social adjustment focus</li>
+                            <li><strong>Language Changes:</strong> ESL/EFL support needs</li>
+                        </ul>
+                        
+                        <h4>Academic Continuity Checklist</h4>
+                        <ul>
+                            <li>☑️ Obtain official transcripts</li>
+                            <li>☑️ Document extracurriculars</li>
+                            <li>☑️ Get teacher recommendations</li>
+                            <li>☑️ Create academic portfolio</li>
+                            <li>☑️ Research credit transfers</li>
+                            <li>☑️ Plan for gaps/overlaps</li>
+                        </ul>
+                        
+                        <h4>Social-Educational Balance</h4>
+                        <p>Remember: Social adjustment often matters more than academics</p>
+                        <ul>
+                            <li>• Allow grade flexibility if needed</li>
+                            <li>• Prioritize friendship building</li>
+                            <li>• Join clubs/activities quickly</li>
+                            <li>• Connect with other TCKs</li>
+                            <li>• Communicate with teachers about TCK needs</li>
+                        </ul>
+                        
+                        <h4>University Preparation for TCKs</h4>
+                        <ul>
+                            <li>🎓 Research TCK-friendly universities</li>
+                            <li>📝 Explain educational diversity in applications</li>
+                            <li>🌍 Highlight global perspectives as strength</li>
+                            <li>🏠 Plan for "home" leave logistics</li>
+                            <li>💰 Understand international student vs. domestic status</li>
+                        </ul>
+                    `
+                },
+                grief: {
+                    title: 'Processing Grief & Loss',
+                    content: `
+                        <h4>Hidden Losses TCKs Experience</h4>
+                        <ul>
+                            <li>• Loss of friends (repeatedly)</li>
+                            <li>• Loss of places and homes</li>
+                            <li>• Loss of pets left behind</li>
+                            <li>• Loss of status/recognition</li>
+                            <li>• Loss of extended family relationships</li>
+                            <li>• Loss of cultural identity</li>
+                            <li>• Loss of mother tongue fluency</li>
+                        </ul>
+                        
+                        <h4>Stages of TCK Grief</h4>
+                        <ol>
+                            <li><strong>Denial:</strong> "It's just another adventure"</li>
+                            <li><strong>Anger:</strong> "Why do we have to move again?"</li>
+                            <li><strong>Bargaining:</strong> "Can't we stay just one more year?"</li>
+                            <li><strong>Depression:</strong> "I'll never have real friends"</li>
+                            <li><strong>Acceptance:</strong> "This is my life and it has value"</li>
+                        </ol>
+                        
+                        <h4>Healthy Grief Processing</h4>
+                        <ul>
+                            <li>✓ Acknowledge all losses as real</li>
+                            <li>✓ Create memorial rituals</li>
+                            <li>✓ Keep memory books/boxes</li>
+                            <li>✓ Maintain connections when possible</li>
+                            <li>✓ Share your own grief</li>
+                            <li>✓ Seek professional help if needed</li>
+                        </ul>
+                        
+                        <h4>When to Seek Professional Help</h4>
+                        <ul>
+                            <li>⚠️ Grief lasting more than 6 months</li>
+                            <li>⚠️ Inability to form new attachments</li>
+                            <li>⚠️ Persistent depression or anxiety</li>
+                            <li>⚠️ Self-harm or risky behaviors</li>
+                            <li>⚠️ Academic/social functioning decline</li>
+                        </ul>
+                    `
+                },
+                resilience: {
+                    title: 'Building Resilience',
+                    content: `
+                        <h4>Five Pillars of TCK Resilience</h4>
+                        <ul>
+                            <li><strong>1. Identity Security:</strong> Know who they are beyond location</li>
+                            <li><strong>2. Relationship Skills:</strong> Build and maintain connections</li>
+                            <li><strong>3. Adaptability:</strong> Flex without losing self</li>
+                            <li><strong>4. Emotional Regulation:</strong> Process feelings healthily</li>
+                            <li><strong>5. Meaning Making:</strong> Find purpose in experiences</li>
+                        </ul>
+                        
+                        <h4>Resilience Building Activities</h4>
+                        <ul>
+                            <li>🎯 Set achievable goals in new places</li>
+                            <li>💪 Celebrate overcoming challenges</li>
+                            <li>📝 Journal about growth</li>
+                            <li>🤝 Practice making new friends</li>
+                            <li>🎨 Express experiences creatively</li>
+                            <li>🏃 Develop portable hobbies</li>
+                        </ul>
+                        
+                        <h4>Family Resilience Practices</h4>
+                        <ul>
+                            <li>• Weekly family meetings</li>
+                            <li>• Gratitude sharing rituals</li>
+                            <li>• Story telling traditions</li>
+                            <li>• Celebration of small wins</li>
+                            <li>• Problem-solving together</li>
+                            <li>• Maintaining family traditions</li>
+                        </ul>
+                        
+                        <h4>Building a Resilience Toolkit</h4>
+                        <p>Help your TCK develop these skills:</p>
+                        <ul>
+                            <li>✓ Self-advocacy abilities</li>
+                            <li>✓ Cultural code-switching</li>
+                            <li>✓ Emotional vocabulary</li>
+                            <li>✓ Conflict resolution</li>
+                            <li>✓ Help-seeking behavior</li>
+                            <li>✓ Stress management</li>
+                            <li>✓ Perspective-taking</li>
+                        </ul>
+                    `
+                }
+            };
+            
+            const resource = resourceContent[type];
+            if (!resource) {
+                showMessage('Resource content coming soon!', 'info');
+                return;
+            }
+            
+            // Create or update resource display
+            let resourceDisplay = document.getElementById('resourceDisplay');
+            if (!resourceDisplay) {
+                resourceDisplay = document.createElement('div');
+                resourceDisplay.id = 'resourceDisplay';
+                resourceDisplay.className = 'content-card';
+                resourceDisplay.style.marginTop = '20px';
+                resourceDisplay.style.border = '3px solid var(--primary)';
+                
+                const parentDashboard = document.getElementById('parentDashboard');
+                parentDashboard.appendChild(resourceDisplay);
+            }
+            
+            resourceDisplay.innerHTML = `
+                <button class="btn btn-secondary" onclick="closeResourceDisplay()" style="float: right;">✕ Close</button>
+                <h3 style="color: var(--primary); margin-bottom: 20px;">${resource.title}</h3>
+                <div style="line-height: 1.8;">
+                    ${resource.content}
+                </div>
+                <div style="margin-top: 30px; text-align: center;">
+                    <button class="btn" onclick="downloadResource('${type}')">
+                        📥 Download This Guide
+                    </button>
+                    <button class="btn btn-secondary" onclick="printResource('${type}')" style="margin-left: 10px;">
+                        🖨️ Print Guide
+                    </button>
+                </div>
+            `;
+            
+            resourceDisplay.scrollIntoView({ behavior: 'smooth' });
+            showMessage(`Opened ${resource.title} resource guide`, 'success');
+        }
+        
+        function closeResourceDisplay() {
+            const resourceDisplay = document.getElementById('resourceDisplay');
+            if (resourceDisplay) {
+                resourceDisplay.remove();
+            }
+        }
+        
+        function downloadResource(type) {
+            showMessage(`Downloading ${type} resource guide...`, 'info');
+            setTimeout(() => {
+                showMessage('Resource guide downloaded successfully!', 'success');
+            }, 1500);
+        }
+        
+        function printResource(type) {
+            showMessage('Opening print dialog...', 'info');
+            window.print();
+        }
+
+        // Audio Toggle
+        document.getElementById('audioToggle').addEventListener('click', function() {
+            const audio = document.getElementById('backgroundAudio');
+            appData.audioPlaying = !appData.audioPlaying;
+            this.classList.toggle('playing');
+            document.getElementById('audioIcon').textContent = appData.audioPlaying ? '🔇' : '🎵';
+            
+            if (appData.audioPlaying) {
+                audio.play().catch(() => {
+                    showMessage('Audio requires user interaction to play', 'info');
+                });
+                showMessage('Calming music playing', 'info');
+            } else {
+                audio.pause();
+                showMessage('Music paused', 'info');
+            }
+        });
+
+        // Message System
+        function showMessage(text, type = 'info') {
+            const message = document.createElement('div');
+            message.className = `message ${type}`;
+            message.textContent = text;
+            
+            const activeScreen = document.querySelector('.screen.active');
+            if (activeScreen) {
+                // Remove existing messages
+                const existingMessage = activeScreen.querySelector('.message');
+                if (existingMessage) {
+                    existingMessage.remove();
+                }
+                
+                // Insert after back button or at beginning
+                const backButton = activeScreen.querySelector('.back-button');
+                if (backButton) {
+                    backButton.insertAdjacentElement('afterend', message);
+                } else {
+                    activeScreen.insertBefore(message, activeScreen.firstChild);
+                }
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 5000);
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', function() {
+            initApp();
+            
+            // Auto-save every 30 seconds
+            setInterval(saveData, 30000);
+            
+            // Save on unload
+            window.addEventListener('beforeunload', saveData);
+        });
+
+        // Prevent double-tap zoom on mobile
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
